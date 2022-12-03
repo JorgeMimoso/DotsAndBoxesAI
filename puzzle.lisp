@@ -1,6 +1,6 @@
-;;;; Ficheiro do Puzzle - Trata da criação do tabuleiro e funções auxiliares deste
+;;;; Ficheiro do Puzzle - Trata da criaÃ§Ã£o do tabuleiro e funÃ§Ãµes auxiliares deste
 ;;;; Projeto IA Fase 1 - Dots and Boxes
-;;;; Autores: Guilherme Martins 201802243, Jorge Mimoso (numero)
+;;;; Autores: Guilherme Martins 201802243, Jorge Mimoso 202000695
 
 ;;##############################################TABULEIRO####################################################
 
