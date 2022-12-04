@@ -1,6 +1,6 @@
-;;;; Ficheiro de Procura - Trata da implementação dos algoritmos de procura e suas funções auxiliares
+;;;; Ficheiro de Procura - Trata da implementaÃ§Ã£o dos algoritmos de procura e suas funÃ§Ãµes auxiliares
 ;;;; Projeto IA Fase 1 - Dots and Boxes
-;;;; Autores: Guilherme Martins 201802243, Jorge Mimoso (numero)
+;;;; Autores: Guilherme Martins 201802243, Jorge Mimoso 202000695
 
 
 ;;###################################AUXILIARES#############################################
