@@ -4,7 +4,7 @@ Notes:
 
 Operadores -> Cria arco / remove arco???
 
-Estado final -> sem possibilidade de fechar caixas
+Estado final -> sem possibilidade de fechar caixas? Definir numero de caixas max? 
 
 TODO's
 
