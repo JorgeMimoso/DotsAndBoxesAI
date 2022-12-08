@@ -1,6 +1,6 @@
-;;;; Ficheiro do Puzzle - Trata da criaÃ§Ã£o do tabuleiro e funÃ§Ãµes auxiliares deste
+;;;; Ficheiro do Puzzle - Trata da criação do tabuleiro e funções auxiliares deste
 ;;;; Projeto IA Fase 1 - Dots and Boxes
-;;;; Autores: Guilherme Martins 201802243, Jorge Mimoso 202000695
+;;;; Autores: Guilherme Martins 201802243, Jorge Mimoso (numero)
 
 ;;##############################################TABULEIRO####################################################
 
@@ -42,6 +42,14 @@
 ;;get-arcos-verticais: retorna a lista com os arcos verticais do tabuleiro
 (defun get-arcos-verticais (tabuleiro)
      (second tabuleiro)
+)
+
+(defun get-arco-horizontal (tabuleiro)
+     (first (get-arcos-horizontais tabuleiro))
+)
+
+(defun get-arco-vertical (tabuleiro)
+     (first (get-arcos-verticais tabuleiro))
 )
 
 ;;get-arco-na-posicao: retorna o valor do arco numa posicao dada

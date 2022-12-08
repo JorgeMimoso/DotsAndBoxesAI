@@ -1,6 +1,6 @@
-;;;; Ficheiro de Procura - Trata da implementaÃ§Ã£o dos algoritmos de procura e suas funÃ§Ãµes auxiliares
+;;;; Ficheiro de Procura - Trata da implementação dos algoritmos de procura e suas funções auxiliares
 ;;;; Projeto IA Fase 1 - Dots and Boxes
-;;;; Autores: Guilherme Martins 201802243, Jorge Mimoso 202000695
+;;;; Autores: Guilherme Martins 201802243, Jorge Mimoso (numero)
 
 
 ;;###################################AUXILIARES#############################################
@@ -8,8 +8,8 @@
 (defun no-teste ()
      '(
        (
-        ((0 0 0) (0 0 0) (0 0 0) (1 0 0) (1 0 0)) 
-        ((0 0 0 0) (0 0 0 0) (1 0 0 0) (1 0 0 0))
+        ((0 0 0) (0 0 0) (0 0 0) (0 0 1) (0 0 1)) 
+        ((0 0 0 0) (0 0 0 0) (0 0 0 1) (0 0 0 1))
        ) 0 nil)
 )
 
@@ -18,6 +18,38 @@
        (
         ((0 0 0 0) (0 0 0 0) (0 0 0 1) (0 0 0 1)) 
         ((0 0 0) (0 0 0) (0 0 0) (0 0 1) (0 0 1))
+       ) 0 nil)
+)
+
+(defun no-teste3 ()
+     '(
+       (
+        ((0 0 0) (0 0 1) (0 1 1) (0 0 1))
+        ((0 0 0) (0 1 0) (0 0 1) (0 1 1))
+       ) 0 nil)
+)
+
+(defun no-teste4 ()
+     '(
+       (
+        ((0 0 0) (0 1 0) (0 1 0) (0 0 0))
+        ((0 0 0) (0 1 0) (0 1 0) (0 0 0))
+       ) 0 nil)
+)
+
+(defun no-teste5 ()
+     '(
+       (
+        ((0 0 0 0) (0 0 0 0) (0 0 1 0) (0 0 1 0) (0 0 1 0))
+        ((0 0 0 0) (0 0 0 0) (0 0 1 1) (0 0 1 1) (0 0 0 0))
+       ) 0 nil)
+)
+
+(defun no-teste6 ()
+     '(
+       (
+        ((0 0 1 0) (1 1 1 1) (0 0 1 1) (0 0 1 1) (0 0 1 1))
+        ((0 0 1 1) (0 0 1 1) (1 1 1 1) (1 0 1 1) (0 1 1 1))
        ) 0 nil)
 )
 
@@ -38,45 +70,59 @@
 )
 
 ;;REVER
-(defun caixa-fechadap (no line col)
+(defun caixa-fechada-hrzp (no line col)
      (cond
          ((zerop (get-arco-na-posicao line col (get-arcos-horizontais (no-estado no)))) nil)
          ((and
-             (> (length (get-arcos-horizontais (no-estado no))) (length (get-arcos-verticais (no-estado no))))
-             (>= line (length (get-arcos-verticais (no-estado no))))
-             (not (zerop (get-arco-na-posicao line col (get-arcos-horizontais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao (1+ line) col (get-arcos-horizontais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao (1- line) (1+ col) (get-arcos-verticais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao line (1+ col) (get-arcos-verticais (no-estado no)))))
-          ) t)
-         ((and
-             (> (length (get-arcos-verticais (no-estado no))) (length (get-arcos-horizontais (no-estado no))))
-             (= line (1- (length (get-arcos-horizontais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao line col (get-arcos-horizontais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao (1+ line) col (get-arcos-horizontais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao (1+ line) (1- col) (get-arcos-verticais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao (+ line 2) (1- col) (get-arcos-verticais (no-estado no)))))
-          ) t)
-         ((and
-             (> (length (get-arcos-horizontais (no-estado no))) (length (get-arcos-verticais (no-estado no))))
-             (>= line (length (get-arcos-verticais (no-estado no))))
-             (= col 1)
-             (not (zerop (get-arco-na-posicao line col (get-arcos-horizontais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao (1+ line) col (get-arcos-horizontais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao (1- line) col (get-arcos-verticais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao line col (get-arcos-verticais (no-estado no)))))
-          ) t)
-         ((and
-             
-          )
-         ((and
-             (not (zerop (get-arco-na-posicao line col (get-arcos-horizontais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao (1+ line) col (get-arcos-horizontais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao line col (get-arcos-verticais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao (1+ line) col (get-arcos-verticais (no-estado no)))))
-          ) t)
+            (not (zerop (get-arco-na-posicao line col (get-arcos-horizontais (no-estado no)))))
+            (not (zerop (get-arco-na-posicao (1+ line) col (get-arcos-horizontais (no-estado no)))))
+            (not (zerop (get-arco-na-posicao col line (get-arcos-verticais (no-estado no)))))
+            (not (zerop (get-arco-na-posicao (1+ col) line (get-arcos-verticais (no-estado no)))))
+          ) t) 
      )
 )
 
-;;(defun num-caixas-fechadas (no line col) )
+(defun caixa-fechada-vrtp (no line col)
+     (cond
+         ((zerop (get-arco-na-posicao line col (get-arcos-verticais (no-estado no)))) nil)
+         ((and
+             (not (zerop (get-arco-na-posicao line col (get-arcos-verticais (no-estado no)))))
+             (not (zerop (get-arco-na-posicao (1+ line) col (get-arcos-verticais (no-estado no)))))
+             (not (zerop (get-arco-na-posicao col line (get-arcos-horizontais (no-estado no)))))
+             (not (zerop (get-arco-na-posicao (1+ col) line (get-arcos-horizontais (no-estado no)))))
+           ) t)
+     )
+)
+
+(defun caixa-fechadap (no line col)
+     (cond
+         ((or (caixa-fechada-hrzp no line col) (caixa-fechada-vrtp no line col)) t)
+     )
+)
+
+;;esta a retornar 1+ do que suposto
+(defun num-caixas-fechadas (no &optional (line 1) (col 1)) 
+     (cond
+         ((or 
+            (= line (length (get-arcos-horizontais (no-estado no))))
+            (= line (length (get-arcos-verticais (no-estado no))))
+          ) 0)
+         ((and 
+             (or 
+               (= col (length (get-arco-horizontal (no-estado no)))) 
+               (= col (length (get-arco-vertical (no-estado no)))) 
+             )
+             (not (caixa-fechadap no line col))
+          )(+ 0 (num-caixas-fechadas no (1+ line) 1)))
+         ((and 
+             (or 
+               (= col (length (get-arco-horizontal (no-estado no)))) 
+               (= col (length (get-arco-vertical (no-estado no)))) 
+             )
+             (caixa-fechadap no line col)
+          )(+ 1 (num-caixas-fechadas no (1+ line) 1)))
+         ((caixa-fechadap no line col) (+ 1 (num-caixas-fechadas no line (1+ col))))
+         (t (+ 0 (num-caixas-fechadas no line (1+ col))))
+     )
+)
 
