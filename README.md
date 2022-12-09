@@ -9,7 +9,6 @@ Duas heuristicas obrigatórias: 1) h(x) = o(x) − c(x) | 2) Heuristica original
 Métodos Bónus:
 Simplified Memory‒Bounded A* (SMA*), Iterative Deepening A* (IDA*) ou Recursive Best First Search (RBFS).
 
-Operadores -> Cria arco / remove arco???
 
 Estado final -> sem possibilidade de fechar caixas? Definir numero de caixas max? 
 
