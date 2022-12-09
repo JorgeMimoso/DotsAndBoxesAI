@@ -25,6 +25,5 @@ penetrância, o tempo de execução e o caminho até à solução.
 TODO's
 - Heuristicas 
 - algoritmos obrigatorios
-- Criar método com lista de operadores;
 - Melhorar e terminar método de verificação de caixa fechada;
 - Criar método para obter sucessores/ estados possíveis;
