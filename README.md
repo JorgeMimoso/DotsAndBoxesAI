@@ -22,3 +22,4 @@ TODO's
 - algoritmos obrigatorios
 - Melhorar e terminar método de verificação de caixa fechada;
 - Criar método para obter sucessores/ estados possíveis;
+- problemas em ficheiro .dat
