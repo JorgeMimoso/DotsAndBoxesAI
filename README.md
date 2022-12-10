@@ -10,10 +10,6 @@ Métodos Bónus:
 Simplified Memory‒Bounded A* (SMA*), Iterative Deepening A* (IDA*) ou Recursive Best First Search (RBFS).
 
 
-Estado final -> sem possibilidade de fechar caixas? Definir numero de caixas max? 
-
-
-
 
 Dados comparativos para algoritmos e heuristicas:
 -solução encontrada e dados estatísticos sobre a sua eficiência,
