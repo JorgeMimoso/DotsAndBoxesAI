@@ -89,8 +89,8 @@
 ;;arco-vertical: insere um arco na posicao fornecida na lista dos arcos verticais
 (defun arco-vertical (line col tabuleiro &optional (x 1))
      (cond
-         ((or (> line (length (get-arcos-verticais tabuleiro))) (> col (length (first (get-arcos-verticais tabuleiro))))) nil)
-         ((not (zerop (get-arco-na-posicao line col (get-arcos-verticais tabuleiro)))) nil)
-         (t (list (get-arcos-horizontais tabuleiro) (arco-na-posicao line col (get-arcos-verticais tabuleiro) x)))
+         ((or (> col (length (get-arcos-verticais tabuleiro))) (> line (length (first (get-arcos-verticais tabuleiro))))) nil)
+         ((not (zerop (get-arco-na-posicao col line (get-arcos-verticais tabuleiro)))) nil)
+         (t (list (get-arcos-horizontais tabuleiro) (arco-na-posicao col line (get-arcos-verticais tabuleiro) x)))
      )
 )
