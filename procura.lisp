@@ -20,8 +20,6 @@
        ) 0 nil)
 )
 
-
-
 (defun no-teste ()
      '(
        (
@@ -149,7 +147,7 @@
 ;; resultado: NIL
 (defun no-solucaop(no &optional (solucao 1))
   (cond
-    ((= solucao (num-caixas-fechadas  no ))t)
+    ((= solucao (num-caixas-fechadas no)) t)
   )
 )
 
@@ -164,8 +162,8 @@
   (cond
     ((equal op 'arco-horizontal) 
       (cond        
-       ((= (length (car (car(no-estado no )))) col ) (novo-sucessor no 'arco-horizontal (+ 1 line) 1)) 
-       ((= (length (car (no-estado no))  ) line) nil)       
+       ((= (length (car (car (no-estado no)))) col) (novo-sucessor no 'arco-horizontal (+ 1 line) 1)) 
+       ((= (length (car (no-estado no))) line) nil)       
        ((equal (arco-horizontal line col (no-estado no))  nil) (novo-sucessor no 'arco-horizontal line (+ 1 col)))         
        (t  (criar-no  (arco-horizontal line col (no-estado no)) (+ (no-profundidade no) 1) (no-estado no)))               
        )
@@ -186,6 +184,23 @@
   (cond ((and (equal algoritmo 'dfs) (= maxprofundidade (no-profundidade no))) NIL)
         (T ( mapcar #'(lambda(func) (novo-sucessor no func)) oplist)  )
   )
+)
+
+(defun abertos-bfs (abertos nos-sucessores)
+     (append abertos nos-sucessores)
+)
+
+(defun abertos-dfs (abertos nos-sucessores)
+     (append nos-sucessores abertos)
+)
+
+(defun no-existep (no no-list algoritmo)
+     (cond
+         ((null no-list) nil)
+         ((and (equal (no-estado no) (no-estado (first no-list)))) (eq algoritmo 'bfs) t)
+         ((and (equal (no-estado no) (no-estado (first no-list))) (= (no-profundidade (first no-list)))) t)
+         (t (no-existep no (rest no-list) algoritmo))
+     )
 )
   
 
