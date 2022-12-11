@@ -181,12 +181,13 @@
    )
 )
 
-;; Não terminado   
+;; Terminado->resultados não são visiveis num nivel de debug   
 (defun sucessores(no oplist algoritmo &optional maxprofundidade)
   (cond ((and (equal algoritmo 'dfs) (= maxprofundidade (no-profundidade no))) NIL)
-        (T ( mapcar #'(lambda(func) (novo-sucessor no 'arco-horizontal)) oplist)  )
+        (T ( mapcar #'(lambda(func) (novo-sucessor no func)) oplist)  )
   )
 )
+  
 
 
 
