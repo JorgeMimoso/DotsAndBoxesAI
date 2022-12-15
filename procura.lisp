@@ -68,6 +68,22 @@
        ) 0 nil)
 )
 
+(defun no-teste7 ()
+   '(
+       (
+        ((1 1 1) (1 1 1) (1 1 1) (1 1 1) (1 1 1))
+        ((1 1 1 1) (1 1 1 1) (1 1 1 1) (1 1 1 1))
+       ) 0 nil)
+)
+
+(defun no-teste8 ()
+     '(
+       (
+        ((1 1 1 1) (1 1 1 1) (1 1 1 1) (1 1 1 1))
+        ((1 1 1) (1 1 1) (1 1 1) (1 1 1) (1 1 1))
+       ) 0 nil)
+)
+
 (defun criar-no (tabuleiro &optional (g 0) (pai nil))
      (list tabuleiro g pai)
 )
@@ -118,24 +134,21 @@
 ;;Fixed -> actualizei apenas para verificar numa direção (horizontal), se verificarmos as duas direções, conta caixas repetidas
 (defun num-caixas-fechadas (no &optional (line 1) (col 1)) 
      (cond
-         ((or 
-            (= line (length (get-arcos-horizontais (no-estado no))))
-            (= line (length (get-arcos-verticais (no-estado no))))
-          ) 0)
+         ((= line (length (get-arcos-horizontais (no-estado no)))) 0)
          ((and 
              (or 
                (= col (length (get-arco-horizontal (no-estado no)))) 
-               (= col (length (get-arco-vertical (no-estado no)))) 
+               ;;(= col (length (get-arco-vertical (no-estado no)))) 
              )
              (not (caixa-fechada-hrzp no line col))
           )(+ 0 (num-caixas-fechadas no (1+ line) 1)))
          ((and 
-             (or 
+             ;;(or 
                (= col (length (get-arco-horizontal (no-estado no)))) 
-               (= col (length (get-arco-vertical (no-estado no)))) 
-             )
+               ;;(= col (length (get-arco-vertical (no-estado no)))) 
+             ;;)
              (caixa-fechada-hrzp no line col)
-          )(+ 1 (num-caixas-fechadas no (1+ line) 1)))
+          ) (+ 1 (num-caixas-fechadas no (1+ line) 1)))
          ((caixa-fechada-hrzp no line col) (+ 1 (num-caixas-fechadas no line (1+ col))))
          (t (+ 0 (num-caixas-fechadas no line (1+ col))))
      )
@@ -203,6 +216,7 @@
      )
 )
   
+
 
 
 
