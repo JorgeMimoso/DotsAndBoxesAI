@@ -1,0 +1,39 @@
+(defun caixa-fechada-hrzp (no line col)
+     (cond
+         ((zerop (get-arco-na-posicao line col (get-arcos-horizontais (no-estado no)))) nil)
+         ((or (and
+                (not (zerop (get-arco-na-posicao line col (get-arcos-horizontais (no-estado no)))))
+                (not (zerop (get-arco-na-posicao (1+ line) col (get-arcos-horizontais (no-estado no)))))
+                (not (zerop (get-arco-na-posicao col line (get-arcos-verticais (no-estado no)))))
+                (not (zerop (get-arco-na-posicao (1+ col) line (get-arcos-verticais (no-estado no)))))
+             )
+             (and
+                (> line 1)
+                (not (zerop (get-arco-na-posicao line col (get-arcos-horizontais (no-estado no)))))
+                (not (zerop (get-arco-na-posicao (1- line) col (get-arcos-horizontais (no-estado no)))))
+                (not (zerop (get-arco-na-posicao col line (get-arcos-verticais (no-estado no)))))
+                (not (zerop (get-arco-na-posicao (1+ col) line (get-arcos-verticais (no-estado no)))))
+             )
+           ) t)
+     )
+)
+
+(defun caixa-fechada-vrtp (no line col)
+         (cond
+         ((zerop (get-arco-na-posicao line col (get-arcos-verticais (no-estado no)))) nil)
+         ((or (and
+                (not (zerop (get-arco-na-posicao line col (get-arcos-verticais (no-estado no)))))
+                (not (zerop (get-arco-na-posicao (1+ line) col (get-arcos-verticais (no-estado no)))))
+                (not (zerop (get-arco-na-posicao col line (get-arcos-horizontais (no-estado no)))))
+                (not (zerop (get-arco-na-posicao (1+ col) line (get-arcos-horizontais (no-estado no)))))
+             )
+             (and
+                (> line 1)
+                (not (zerop (get-arco-na-posicao line col (get-arcos-verticais (no-estado no)))))
+                (not (zerop (get-arco-na-posicao (1- line) col (get-arcos-verticais (no-estado no)))))
+                (not (zerop (get-arco-na-posicao col (1- line) (get-arcos-horizontais (no-estado no)))))
+                (not (zerop (get-arco-na-posicao (1+ col) (1- line) (get-arcos-horizontais (no-estado no)))))
+             )
+           ) t)
+     )
+)
