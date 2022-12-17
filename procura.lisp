@@ -317,16 +317,15 @@
             (cond
                  ((no-solucaop no sol) no)
                  (
-                  (verifica-suc-sol (expande-no no 'sucessores abertos fechados) sol)
-                  (get-suc-sol (expande-no no 'sucessores abertos fechados) sol)
+                  (verifica-suc-sol (expande-no-bfs no 'sucessores abertos fechados) sol)
+                  (get-suc-sol (expande-no-bfs no 'sucessores abertos fechados) sol)
                  )
                  (
-                  (and 
-                      (null (verifica-suc-sol (expande-no no 'sucessores abertos fechados) sol)))
+                      (null (verifica-suc-sol (expande-no-bfs no 'sucessores abertos fechados) sol))
                        (bfs 
-                         (first (expande-no no 'sucessores abertos fechados))
+                         (first (expande-no-bfs no 'sucessores abertos fechados))
                          sol
-                         (expande-no no 'sucessores abertos fechados)
+                         (expande-no-bfs no 'sucessores abertos fechados)
                          (append fechados (list no))
                       ))
            )
@@ -334,10 +333,38 @@
          (t nil))
 )
 
-(defun expande-no (no fnsuc abertos fechados)
+(defun dfs (no sol prof &optional (abertos '()) (fechados '()))
+     (cond
+         ((not (null abertos))
+            (cond
+                ((no-solucaop no sol) no)
+                (
+                 (verifica-suc-sol (expande-no-dfs no 'sucessores abertos fechados prof) sol)
+                 (get-suc-sol (expande-no-dfs no 'sucessores abertos fechados prof) sol)
+                )
+                (
+                    (null (verifica-suc-sol (expande-no-dfs no 'sucessores abertos fechados prof) sol))
+                    (dfs
+                       (first (expande-no-dfs no 'sucessores abertos fechados prof))
+                       sol
+                       prof
+                       (expande-no-dfs no 'sucessores abertos fechados prof)
+                       (append fechados (list no))
+                    ))
+            )
+        ) (t nil))
+)
+
+(defun expande-no-bfs (no fnsuc abertos fechados)
      (verifica-sucs-dupls 
                        (abertos-bfs (rest abertos) (funcall fnsuc no (operadores) 'bfs))
                        (append fechados (list no)) 'bfs)
+)
+
+(defun expande-no-dfs (no fnsuc abertos fechados prof)
+     (verifica-sucs-dupls
+                       (abertos-dfs (rest abertos) (funcall fnsuc no (operadores) 'dfs prof))
+                       (append fechados (list no)) 'dfs)
 )
 
 (defun verifica-sucs-dupls (abertos fechados algoritmo)
