@@ -96,6 +96,8 @@
        ) 0 nil)
 )
 
+;;############################################# CRIAÇÃO DUM NÓ  #############################################
+
 (defun criar-no (tabuleiro &optional (g 0) (pai nil))
      (list tabuleiro g pai)
 )
@@ -112,8 +114,10 @@
      (third no)
 )
 
+;;############################################# FUNÇÕES AUXILIARES #############################################
+
 ;;REVER
-(defun caixa-fechada-hrzp (no line col)
+(defun caixa-fechadap (no line col)
      (cond
          ((zerop (get-arco-na-posicao line col (get-arcos-horizontais (no-estado no)))) nil)
          ((and
@@ -125,43 +129,19 @@
      )
 )
 
-(defun caixa-fechada-vrtp (no line col)
-     (cond
-         ((zerop (get-arco-na-posicao line col (get-arcos-verticais (no-estado no)))) nil)
-         ((and
-             (not (zerop (get-arco-na-posicao line col (get-arcos-verticais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao (1+ line) col (get-arcos-verticais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao col line (get-arcos-horizontais (no-estado no)))))
-             (not (zerop (get-arco-na-posicao (1+ col) line (get-arcos-horizontais (no-estado no)))))
-           ) t)
-     )
-)
-
-(defun caixa-fechadap (no line col)
-     (cond
-         ((or (caixa-fechada-hrzp no line col) (caixa-fechada-vrtp no line col)) t)
-     )
-)
-
 ;;Fixed -> actualizei apenas para verificar numa direção (horizontal), se verificarmos as duas direções, conta caixas repetidas
 (defun num-caixas-fechadas (no &optional (line 1) (col 1)) 
      (cond
          ((= line (length (get-arcos-horizontais (no-estado no)))) 0)
          ((and 
-             (or 
-               (= col (length (get-arco-horizontal (no-estado no)))) 
-               ;;(= col (length (get-arco-vertical (no-estado no)))) 
-             )
-             (not (caixa-fechada-hrzp no line col))
+             (= col (length (get-arco-horizontal (no-estado no)))) 
+             (not (caixa-fechadap no line col))
           )(+ 0 (num-caixas-fechadas no (1+ line) 1)))
          ((and 
-             ;;(or 
-               (= col (length (get-arco-horizontal (no-estado no)))) 
-               ;;(= col (length (get-arco-vertical (no-estado no)))) 
-             ;;)
-             (caixa-fechada-hrzp no line col)
+             (= col (length (get-arco-horizontal (no-estado no)))) 
+             (caixa-fechadap no line col)
           ) (+ 1 (num-caixas-fechadas no (1+ line) 1)))
-         ((caixa-fechada-hrzp no line col) (+ 1 (num-caixas-fechadas no line (1+ col))))
+         ((caixa-fechadap no line col) (+ 1 (num-caixas-fechadas no line (1+ col))))
          (t (+ 0 (num-caixas-fechadas no line (1+ col))))
      )
 )
@@ -209,28 +189,16 @@
   )
 )
 
-;(defun novo-sucessor (no func &optional (line 1) (col 1))
-;     (cond
-;         ((eq func 'arco-horizontal) (list (funcall func (no-estado no) line col) (+ (no-profundidade no) 1) no);)
-;         ((eq func 'arco-vertical) (list (funcall func (no-estado no) col line) (+ (no-profundidade no) 1) no))
-;     )
-;)
-
-;(defun sucessores (no ops alg &optional (line 1) (col 1) (g 2))
-;     (cond
-;         ((null ops) nil)
-;         ((= (no-profundidade no) g) nil)
-;         ((and (eq alg 'bfs) (not (equal no nil))) (cons (novo-sucessor no (car ops) line col) (sucessores no (cdr ops) alg line col g)))
-;         ((and (eq alg 'dfs) (not (equal no nil))) (cons (novo-sucessor no (car ops) line col) (sucessores no (cdr ops) alg line col g)))
-;     )
-;)
-
 (defun abertos-bfs (abertos sucessores)
-  (append abertos sucessores)
+     (append abertos sucessores)
 )
 
 (defun abertos-dfs (abertos sucessores)
-  (append sucessores abertos)
+     (append sucessores abertos)
+)
+
+(defun abertos-heuristica (abertos sucessores sol)
+     (organiza-sucs (abertos-bfs abertos sucessores) sol)
 )
 
 
@@ -249,67 +217,7 @@
      )
 )
 
-
-
-;; implementacao lab 6
-;(defun bfs (no-inicial solucaop sucessores operadores &optional abertos fechados)
-;  (let* (
-;         (abertos (abertos-bfs abertos 
-;                       (remove nil (mapcar (lambda(x) (cond ((or (no-existep x fechados) (no-existep x abertos)) NIL) (T x))) (sucessores no-inicial operadores 'bfs)))
-;                  )
-;         )
-;         (fechados (cons no-inicial fechados))
-;        )
-;  (cond ((remove nil (mapcar solucaop abertos)) (find-if solucaop abertos))
-;        (T (bfs (car abertos) solucaop sucessores operadores (cdr abertos) fechados))
-;  ))
-;)
-
-;(defun bfs (fnsuc &optional abertos fechados)
-;     (cond
-;         ((null abertos) nil)
-;         (
-;     )
-;)
-
-
-;(defun expande-no-bfs (no abertos)
-;     (append abertos (sucessores no (operadores) 'bfs))
-;)
-
-;(defun bfs (no sol &optional (abertos '()) (fechados '()) (line 1) (col 1) (prof 1))
-;     (cond
-;         ((not (null abertos)) 
-;            (cond
-;                 ((no-solucaop no sol) no)
-;                 (
-;                  (verifica-suc-sol (expande-no no 'sucessores abertos fechados line col) sol)
-;                  (get-suc-sol (expande-no no 'sucessores abertos fechados line col) sol)
-;                 )
-;                 (
-;                  (and 
-;                      (null (verifica-suc-sol (expande-no no 'sucessores abertos fechados line col) sol))
-;                      (< (no-profundidade no) prof))
-;                       (bfs 
-;                         (first (expande-no no 'sucessores abertos fechados line col))
-;                         sol
-;                         (expande-no no 'sucessores abertos fechados line col)
-;                         (append fechados (list no))
-;                         line
-;                         col
-;                         prof
-;                      ))
-;                  (t (bfs (first (expande-no no 'sucessores abertos fechados line col))
-;                          sol
-;                          (expande-no no 'sucessores abertos fechados line col)
-;                          (append fechados (list no))
-;                          (first (verifica-col-line no line col))
-;                          (second (verifica-col-line no line col))
-;                          (1+ prof)
-;                  )))
-;         )
-;         (t nil))
-;)
+;;############################################# ALGORITMOS #############################################
 
 (defun bfs (no sol &optional (abertos '()) (fechados '()))
      (cond
@@ -355,6 +263,31 @@
         ) (t nil))
 )
 
+;;esta a ignorar outros nos potenciais
+(defun aheuristica (no sol &optional (abertos '()) (fechados '()))
+     (cond
+         ((not (null abertos))
+            (cond
+                ((no-solucaop no sol) no)
+                (
+                  (verifica-suc-sol (expande-no-heuristica no sol 'sucessores abertos fechados) sol)
+                  (get-suc-sol (expande-no-heuristica no sol 'sucessores abertos fechados) sol)
+                )
+                (
+                  (null (verifica-suc-sol (expande-no-heuristica no sol 'sucessores abertos fechados) sol))
+                  (aheuristica
+                             (first (expande-no-heuristica no sol 'sucessores abertos fechados))
+                             sol
+                             (expande-no-heuristica no sol 'sucessores abertos fechados)
+                             (append fechados (list no))
+                  )
+                )
+            )
+     ) (t nil))
+)
+
+
+
 (defun expande-no-bfs (no fnsuc abertos fechados)
      (verifica-sucs-dupls 
                        (abertos-bfs (rest abertos) (funcall fnsuc no (operadores) 'bfs))
@@ -366,6 +299,74 @@
                        (abertos-dfs (rest abertos) (funcall fnsuc no (operadores) 'dfs prof))
                        (append fechados (list no)) 'dfs)
 )
+
+(defun expande-no-heuristica (no sol fnsuc abertos fechados)
+     (verifica-sucs-dupls
+                       (abertos-heuristica (rest abertos) (funcall fnsuc no (operadores) 'bfs) sol)
+                       (append fechados (list no)) 'bfs)
+)
+
+(defun heuristica (no sol)
+     (- sol (num-caixas-fechadas no))
+)
+
+(defun organiza-sucs (sucs sol)
+     (cond
+         ((null sucs) nil)
+         (t (append
+                  (organiza-sucs (menor-heuristica-sucs (first sucs) (rest sucs) sol) sol)
+                  (list (first sucs))
+                  (organiza-sucs (maior-heuristica-sucs (first sucs) (rest sucs) sol) sol)
+            )
+         )
+     )
+)
+
+(defun menor-heuristica-sucs (no sucs sol)
+     (cond
+         ((null sucs) nil)
+         (t (cond
+                ((< (heuristica (first sucs) sol) (heuristica no sol))
+                 (cons (first sucs) (menor-heuristica-sucs no (rest sucs) sol)))
+                (t (menor-heuristica-sucs no (rest sucs) sol))
+            ))
+     )
+)
+
+(defun maior-heuristica-sucs (no sucs sol)
+     (cond
+         ((null sucs) nil)
+         (t (cond
+                ((>= (heuristica (first sucs) sol) (heuristica no sol))
+                 (cons (first sucs) (maior-heuristica-sucs no (rest sucs) sol)))
+                (t (maior-heuristica-sucs no (rest sucs) sol))
+            ))
+     )
+)
+
+
+
+;(defun heuristica-sucs (sucs sol)
+;     (let ((lista (organiza-sucs sucs sol)))
+;        (list (first lista) (second lista))
+;     )
+;)
+
+;(defun organiza-sucs (sucs sol)
+;     (cond
+;         ((null sucs) nil)
+;         ((no-menor-quep (first sucs) sucs sol) (cons (first sucs) (organiza-sucs (rest sucs) sol)))
+;         (t (organiza-sucs (rest sucs) sol))
+;     )
+;)
+
+;(defun no-menor-quep (no sucs sol)
+;     (cond
+;         ((null sucs) t)
+;         ((<= (heuristica no sol) (heuristica (first sucs) sol)) (no-maior-quep no (rest sucs) sol))
+;         (t nil)
+;     )
+;)
 
 (defun verifica-sucs-dupls (abertos fechados algoritmo)
      (remove nil (mapcar #'(lambda(x)
@@ -396,25 +397,3 @@
          (t (list (1+ line) 1))
      )
 )
-
-;(defun bfs (no fnsol fnsuc &optional (abertos '()) (fechados '()))
-;     (let ((novo-abertos (cond
-;                        ((not (null no)) (append abertos (list no))
-;                        (t abertos))
-;                     )))
-;        (cond
-;            ((not (null (first novo-abertos)))
-;               (cond
-;                   ((funcall fnsol (first novo-abertos)) no)
-;                   (let * (( (novo-fechados (append fechados (list (first novo-abertos))))  
-;                             (sucs 
-;                          ))                     
-;                   )
-;               ))
-;        )
-;     )
-;)
-
-
-
-
